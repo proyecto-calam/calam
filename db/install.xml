@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/calam/db" VERSION="20140824" COMMENT="XMLDB file for Moodle local/calam"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_calam_forum" COMMENT="local_calam table calam from MySQL">
+      <FIELDS>
+        <FIELD NAME="id"      TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="forumid"/>
+        <FIELD NAME="forumid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="forumid" NEXT="courseid"/>
+        <FIELD NAME="courseid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="groupid"/>
+        <FIELD NAME="groupid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="courseid" NEXT="responsed_userid"/>
+        <FIELD NAME="responsed_userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="groupid" NEXT="total_posts"/>
+        <FIELD NAME="total_posts" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="responsed_userid" NEXT="total_words"/>
+        <FIELD NAME="total_words" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="total_posts" NEXT="total_char"/>
+        <FIELD NAME="total_char" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="total_words" NEXT="time_start"/>
+        <FIELD NAME="time_start" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="total_char" NEXT="time_end"/>
+        <FIELD NAME="time_end" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="time_start"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="forumid_ix" UNIQUE="false" FIELDS="forumid" NEXT="userid_ix"/>
+        <INDEX NAME="userid_ix" UNIQUE="false" FIELDS="userid" COMMENT="Fast sort of query sets" PREVIOUS="foroid_ix" NEXT="courseid_ix"/>
+        <INDEX NAME="courseid_ix" UNIQUE="false" FIELDS="courseid" COMMENT="Fast sort of query sets" PREVIOUS="userid_ix" NEXT="groupid_ix"/>
+        <INDEX NAME="groupid_ix" UNIQUE="false" FIELDS="groupid" COMMENT="Fast sort of query sets" PREVIOUS="courseid_ix" NEXT="responsed_userid_ix"/>
+        <INDEX NAME="responsed_userid_ix" UNIQUE="false" FIELDS="responsed_userid" COMMENT="Fast sort of query sets" PREVIOUS="groupid_ix" NEXT="time_start_ix"/>
+        <INDEX NAME="time_start_ix" UNIQUE="false" FIELDS="time_start" COMMENT="Fast sort of query sets" PREVIOUS="responsed_userid_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_calam_usertime" COMMENT="local_calam usertime table calam from MySQL">
+      <FIELDS>
+        <FIELD NAME="id"      TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="userid"/>    
+        <FIELD NAME="userid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="time_start"/>
+        <FIELD NAME="time_start" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="userid" NEXT="time_end"/>
+        <FIELD NAME="time_end" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="time_start" NEXT="total_time"/>
+        <FIELD NAME="total_time" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="time_end" NEXT="courseid"/>    
+        <FIELD NAME="courseid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="total_time"/>    
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>    
+        <INDEX NAME="userid_ix" UNIQUE="false" FIELDS="userid" COMMENT="Fast sort of query sets" NEXT="time_start_ix"/>    
+        <INDEX NAME="time_start_ix" UNIQUE="false" FIELDS="time_start" COMMENT="Fast sort of query sets" PREVIOUS="userid_ix" NEXT="time_end_ix"/>
+        <INDEX NAME="time_end_ix" UNIQUE="false" FIELDS="time_end" COMMENT="Fast sort of query sets" PREVIOUS="time_start_ix" NEXT="courseid_ix"/>    
+        <INDEX NAME="courseid_ix" UNIQUE="false" FIELDS="courseid" COMMENT="Fast sort of query sets" PREVIOUS="time_end_ix"/>    
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
