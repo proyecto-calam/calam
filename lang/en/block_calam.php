@@ -5,13 +5,15 @@ $string['calam'] = 'CALAM';
 /*capabilities*/
 $string['calam:addinstance'] = 'Add a new CALAM block';
 $string['calam:myaddinstance'] = 'Add a new CALAM block to the My Moodle page';
+/*
 $string['setup'] = 'Setup CALAM';
 $string['settings'] = 'Settings';
 $string['viewreports'] = 'View reports';
 
 /*edit form*/
-$string['blockstring'] = 'Block Content';
-$string['blocktitle'] = 'Block Title';
+$string['blockstring'] = 'blockstring calam config text!';
+$string['blocktitle'] = 'blocktitle calam config title!';
+/*
 $string['defaulttitle'] = 'Default Block Title';
 $string['defaulttext'] = 'Default Block Text';
 $string['empty'] = 'a';
@@ -21,7 +23,7 @@ $string['descconfig'] = 'description Config';
 $string['labelallowhtml'] = 'Label Allow HTML';
 $string['descallowhtml'] = 'Description Allow HTML';
 
-/*settings*/
+/*settings
 $string['defaultsettings'] = "Default settings";
 $string['defaultdate'] = "Default date tracking";
 $string['timestart'] = "Time start";
@@ -33,4 +35,4 @@ $string['calculateroleinfo'] = "Select the role to calculate statics";
 $string['initday'] = "Day";
 $string['initmonth'] = "Month";
 $string['inityear'] = "Year";
-$string['date_title'] = "Date Settings";
+$string['date_title'] = "Date Settings";*/

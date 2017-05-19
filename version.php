@@ -1,5 +1,5 @@
 <?php
-$plugin->component = 'local_calam';
+$plugin->component = 'block_calam';
 $plugin->version = 2014082400;
 $plugin->requires = 2010112400;
 $plugin->cron = 0;

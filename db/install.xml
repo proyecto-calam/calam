@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/calam/db" VERSION="20140824" COMMENT="XMLDB file for Moodle local/calam"
+<XMLDB PATH="block/calam/db" VERSION="20140824" COMMENT="XMLDB file for Moodle block/calam"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_calam_forum" COMMENT="local_calam table calam from MySQL">
+    <TABLE NAME="block_calam_forum" COMMENT="block_calam table calam from MySQL">
       <FIELDS>
         <FIELD NAME="id"      TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="forumid"/>
         <FIELD NAME="forumid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
@@ -30,7 +30,7 @@
         <INDEX NAME="time_start_ix" UNIQUE="false" FIELDS="time_start" COMMENT="Fast sort of query sets" PREVIOUS="responsed_userid_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="local_calam_usertime" COMMENT="local_calam usertime table calam from MySQL">
+    <TABLE NAME="block_calam_usertime" COMMENT="block_calam usertime table calam from MySQL">
       <FIELDS>
         <FIELD NAME="id"      TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"  NEXT="userid"/>    
         <FIELD NAME="userid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="time_start"/>
