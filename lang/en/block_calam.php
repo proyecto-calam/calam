@@ -11,8 +11,19 @@ $string['settings'] = 'Settings';
 $string['viewreports'] = 'View reports';
 
 /*edit form*/
-$string['blockstring'] = 'blockstring calam config text!';
-$string['blocktitle'] = 'blocktitle calam config title!';
+$string['blockstring'] = 'calam config text!';
+$string['blocktitle'] = 'calam config title!';
+
+
+/*Dashboard*/
+$string['bcd_01'] = 'Time in platform';
+$string['bcd_02'] = 'Course deliveries';
+$string['bcd_03'] = 'Forum posts';
+
+$string['backToDashboard'] = 'Back to dashboard ';
+$string['backToCourse'] = 'Back to course ';
+
+
 /*
 $string['defaulttitle'] = 'Default Block Title';
 $string['defaulttext'] = 'Default Block Text';
