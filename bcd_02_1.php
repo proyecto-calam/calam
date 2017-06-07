@@ -1,24 +1,12 @@
 <?php
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once('lib.php');
-//La variable acción posee el identificador para crear o trucar la tabla mediante AJAX
+
 $group = addslashes(htmlspecialchars($_POST["groups"]));
-
-//La table_name posee el nombre de la tabla para crearla o trucarla mediante AJAX
 $course = addslashes(htmlspecialchars($_POST["course"]));
-
-//La table_name posee el nombre de la tabla para crearla o trucarla mediante AJAX
-//$startdate = addslashes(htmlspecialchars($_POST["startdate"]));
-//$alumnos  = get_student_course($course, $group);
-/*$act = get_course_activity($course);
-$idactivity = get_cadena_id($act);
-$calificaciones = get_user_selected_grades(50, $idactivity);*/
 $resultado = array();
 $resultado["datos"] = computa($course, $group);
-
 $courseobj = $DB->get_record('course', array('id'=>$course));
-//imprime_pre($courseobj);
-
 $resultado["info"] = array("courseid"=>$course, "groupid"=>$group, "coursename"=>$courseobj->fullname);
 echo json_encode ($resultado);
 
@@ -43,7 +31,7 @@ function computa($courseid, $groupid){
       //echo "<pre>";
 
       foreach ($activities as $activity){
-          $init_row[$activity->id] = 0;
+          $init_row[$activity->id] = NULL;
         }
       $row = $init_row;
 
@@ -51,7 +39,7 @@ function computa($courseid, $groupid){
       //inicializa los encabezados y lo asigno a la cadena inicial
       foreach ($row as $index=> $value){
           if(is_numeric($index)) {
-              $row[$index] = array("itemname" =>$activities[$index]->itemname, "orden" =>$i++);
+              $row[$index] = array("itemname" =>$activities[$index]->itemname,"grademax"=>$activities[$index]->grademax, "grader"=>$activities[$index]->grader, "orden" =>$i++);
           }else
               $row[$index] = $index;
       }      
@@ -64,7 +52,7 @@ function computa($courseid, $groupid){
           $row["userid"]= $this_user->userid;
           $row["lastname"]= $this_user->lastname;
           $row["firstname"]= $this_user->firstname;
-
+//echo "<hr />";
 //imprime_pre($this_user);          
           $user_grades = get_user_selected_grades($this_user->userid, $idactivity);
 //imprime_pre($user_grades);
@@ -84,12 +72,13 @@ function computa($courseid, $groupid){
       global $CFG;
 
     $query="
-    SELECT id, itemname, sortorder
-    FROM {$CFG->prefix}grade_items
-    WHERE courseid = ? AND itemtype LIKE 'mod'
+    SELECT gi.id, gi.itemname, gi.sortorder, gi.grademax, cm.id as grader
+    FROM {$CFG->prefix}grade_items AS gi
+    INNER JOIN {$CFG->prefix}course_modules AS cm ON (cm.instance = gi.iteminstance AND cm.course = gi.courseid)
+    WHERE gi.courseid = ? AND gi.gradetype = 1 AND gi.itemtype LIKE 'mod' AND cm.course = ?
     ORDER BY sortorder ASC";
 
-    $datos = $DB->get_records_sql($query, array($courseid));
+    $datos = $DB->get_records_sql($query, array($courseid,$courseid));
 
     return $datos;
   }

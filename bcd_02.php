@@ -23,14 +23,12 @@
 
 	$groups_course = get_groups_course($courseid);
 	$course_start_date = get_course_start_day($courseid);	
-
-
-
-
 	echo $OUTPUT->header();
+
 	echo $tag.' '.$course->fullname;
-
-
+	echo '<div id="return">';
+	echo '<a href="dashboard.php?courseid='.$course->id.'">'.get_string('backToDashboard', 'block_calam').'</a>';
+	echo '</div>';
 
 	if(!is_null($groups_course))
 	{
@@ -57,18 +55,21 @@
 		echo "<div id='grafica'></div>";
 	}
 
-	echo '<div id="return">';	
-	echo '<a href="dashboard.php?courseid='.$course->id.'">'.get_string('backToDashboard', 'block_calam').'</a>';
-	echo '</div>';
+
 	echo $OUTPUT->footer();
 
 	function get_groups_course($courseid){
 		global $DB;
 		global $CFG;
-		$query = "SELECT gr.*
+		global $USER;
+		$query = "SELECT DISTINCT gr.*
 			FROM {$CFG->prefix}groups AS gr 
-			WHERE gr.courseid = $courseid
-			ORDER BY gr.timecreated ASC";
+			INNER JOIN {$CFG->prefix}groups_members as gm ON (gr.id = gm.groupid)
+			WHERE gr.courseid = $courseid";
+		if (!is_siteadmin()){
+			$query .= " AND userid = {$USER->id}";
+		}
+		$query .= " ORDER BY gr.timecreated ASC";
 		$data = $DB->get_records_sql($query);
 		return $data;    
 	}

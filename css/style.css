@@ -35,6 +35,12 @@
 	 margin: 0 auto;
 	text-align:center;
 }
+
+#grafica{
+	height: 600px;
+	display:none;
+	
+}
 /*
 .datepicker {
   top: 0;
