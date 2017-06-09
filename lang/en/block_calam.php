@@ -23,6 +23,11 @@ $string['bcd_03'] = 'Forum posts';
 $string['backToDashboard'] = 'Back to dashboard ';
 $string['backToCourse'] = 'Back to course ';
 
+/*Course deliveries bcd_02*/
+$string['groups'] = 'Groups by course ';
+$string['selectGroup'] = 'Select a group ';
+$string['viewData'] = 'View Data ';
+$string['error_group'] = 'Please select a group ';
 
 /*
 $string['defaulttitle'] = 'Default Block Title';

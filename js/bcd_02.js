@@ -4,14 +4,18 @@ $(document).on("ready", function(){
 	
 
 	/*Función que se invoca al cambiar el combo con id "groups" de valor*/
-	$("#groups").on("change", function(){		
-		var idGrupo = $("#groups option:selected").val();
-		var url = "bcd_02_1.php";
-		
-		$.ajax({
+	$("#id_groups").on("change", function(){	
+		$("#error").hide('slow');
+		$("#error").html('');
+		var idGrupo = $("#id_groups option:selected").val();
+		if(idGrupo != -1)
+		{
+			var url = "bcd_02_1.php";
+			
+			$.ajax({
 				type: "POST",
 				url: url,
-				data: $("#gropus_data").serialize(),
+				data: $("#mform1").serialize(),
 				success: function(data){
 					obj_json = jQuery.parseJSON(data);
 					console.log(obj_json);
@@ -19,6 +23,12 @@ $(document).on("ready", function(){
 				}
 			});
 			return false;
+		}
+		else{
+			$("#error").append("<label for='error_group'>Please select a group</label>");
+			$("#error").show("slow");
+			$("#grafica").hide("slow");
+		}
 	});
 
 

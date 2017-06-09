@@ -1,6 +1,9 @@
 <?php
 	require_once(dirname(__FILE__) . '/../../config.php');
-	
+	require_once('course_deliverie.php');	
+	require_once('lib.php');	
+
+
 	$item = 'bcd_02';
 
 	$tag = get_string($item, 'block_calam');
@@ -18,45 +21,40 @@
 	$PAGE->requires->js('/blocks/calam/js/jquery-2.2.3.min.js');					
 	$PAGE->requires->js('/blocks/calam/js/jquery.canvasjs.min.js');
 	$PAGE->requires->js('/blocks/calam/js/jquery-ui-1.11.4.custom/jquery-ui.js');
-	$PAGE->requires->js('/blocks/calam/js/bcd_02.js');	
+	$PAGE->requires->js('/blocks/calam/js/bcd_02.js');
 
+	
+	$groups_course = get_groups_course($courseid);		
+	$course_start_date = get_course_start_day($courseid);		
+	$startdateform = 1;
 
-	$groups_course = get_groups_course($courseid);
-	$course_start_date = get_course_start_day($courseid);	
-	echo $OUTPUT->header();
-
-	echo $tag.' '.$course->fullname;
-	echo '<div id="return">';
-	echo '<a href="dashboard.php?courseid='.$course->id.'">'.get_string('backToDashboard', 'block_calam').'</a>';
-	echo '</div>';
-
-	if(!is_null($groups_course))
-	{
-		echo "<form id='gropus_data' method='POST'>";
-			echo "<input type='hidden' name='course' value='$courseid'>";
-			foreach ($course_start_date as $startdate){
-				echo "<input type='hidden' name='startdate' value='$startdate->startdate'>";
-			}			
-			echo "<table>";
-				echo "<tr>";
-					echo "<td>";
-						echo "<p>Seleccione el grupo a consultar: </p>";
-					echo "</td>";
-					echo "<td>";
-						echo "<select id='groups' name='groups'>";
-							foreach ($groups_course as $grupo){
-								echo "<option id='grupo$grupo->id' value='$grupo->id'>".$grupo->name."</option>";
-							}
-						echo "</select>";
-					echo "</td>";
-				echo "</tr>";
-			echo "</table>";	
-		echo "</form>";
-		echo "<div id='grafica'></div>";
+	$groups_select = array();
+	$groups_select[-1] = get_string('selectGroup', 'block_calam');
+	foreach ($groups_course as $value) {
+		$groups_select[$value->id] = $value->name;
 	}
+	foreach ($course_start_date as $startdate){
+		$startdateform =$startdate->startdate;
+	}
+	echo $OUTPUT->header();	
+	$mform = new course_deliverie(null, array(
+    'groups_course' => $groups_select,
+    'courseid' => $courseid,
+    'coursename' => $course->fullname,
+    'startdate' => $startdateform
+	));	
 
+	$manageurl = new moodle_url('dashboard.php');
+	if ($mform->is_cancelled()) {
+    	$manageurl->param('courseid', $courseid);
+    	redirect($manageurl);
+	}
+	else{	
+		$mform->display();
+	}
+			
+	echo $OUTPUT->footer();	
 
-	echo $OUTPUT->footer();
 
 	function get_groups_course($courseid){
 		global $DB;
@@ -82,6 +80,5 @@
 			WHERE c.id = $courseid";
 		$data = $DB->get_records_sql($query);
 		return $data;
-	}
-
+	}	
 ?>

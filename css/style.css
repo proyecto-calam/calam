@@ -15,6 +15,12 @@
 	height: 160px;
 }
 
+#error{
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
 #bcd_01{
 /*	background-image: url("../img/bcd_01.png");*/
 	background-color: #4D79FF;
