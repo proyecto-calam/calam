@@ -1,7 +1,10 @@
 
 $(document).on("ready", function(){
 	var obj_json = null;
+	var labels = [];
 
+	getLabels();
+	
 	$("#id_submitbutton").hide();
 
 
@@ -16,12 +19,16 @@ $(document).on("ready", function(){
 		if(idGrupo != -1)
 			generateGraph();					
 		else{
-			$("#error").append("<label for='error_group'>Please select a group</label>");
+			$("#error").append("<label for='error_group'>"+labels['error_01']+"</label>");
 			$("#error").show("slow");
 			$("#grafica").hide("slow");
 		}
 	});
 
+
+	function getLabels(){
+		labels['error_01'] = 'Selectiona a group';
+	}
 	function generateGraph(){
 		var url = "bcd_02_1.php";			
 		$.ajax({
