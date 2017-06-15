@@ -14,27 +14,22 @@ echo json_encode ($resultado);
 
 
 
-function computa($courseid, $groupid){
+function computa($courseid, $groupid = 0){
 	$output = array();
-    $init_row = array (
+    	$init_row = array (
 		"userid" => "",
         "firstname" => "",
         "lastname" => ""          
  	);
-
   	$activities = get_course_activity($courseid); //Se obtiene un arreglo cuya dimensión es la cantidad de actividades de un curso en especifico
-
 	$idactivity = get_cadena_id($activities);
+//imprime_pre($idactivity);
 	$arr_usr = get_student_course($courseid, $groupid); //Se obtiene una lista de id de los usuarios enrolados en el curso
-
-
     foreach ($activities as $activity){
     	$init_row[$activity->id] = NULL;
     }
   	$row = $init_row;
-
   	$i = 1;
-
 	//inicializa los encabezados y lo asigno a la cadena inicial
 	foreach ($row as $index=> $value){
   		if(is_numeric($index)) {
@@ -52,8 +47,12 @@ function computa($courseid, $groupid){
 		$row["lastname"]= $this_user->lastname;
 		$row["firstname"]= $this_user->firstname;
         $user_grades = get_user_selected_grades($this_user->userid, $idactivity);
-        foreach($user_grades as $grade) {                                  
-			$row[$grade->itemid] = $grade->finalgrade;
+        foreach($user_grades as $grade) {
+			if(($grade->finalgrade == NULL) && $grade->usermodified !=NULL){
+				$row[$grade->itemid] = -1;
+			}else{                                  
+				$row[$grade->itemid] = $grade->finalgrade;
+			}
       	}
         array_push($output, $row);
 	}
@@ -88,7 +87,7 @@ function get_user_selected_grades($userid, $items){
       global $DB;
       global $CFG;
     $query="
-    SELECT itemid, finalgrade
+    SELECT itemid, finalgrade, usermodified
     FROM {$CFG->prefix}grade_grades
     WHERE userid = ? AND  itemid IN ($items) ";
     $datos = $DB->get_records_sql($query, array($userid));

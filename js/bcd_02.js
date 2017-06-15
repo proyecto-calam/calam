@@ -77,7 +77,7 @@ $(document).on("ready", function(){
 							case (value >=8 && value <= 10):
 								dataNew[4].dataPoints.push({ x: c_x, y: c_y, valor: valor, escala:gradeMax });
 							break;
-							case (isNaN(value)):
+							case (value < 0):
 								dataNew[1].dataPoints.push({ x: c_x, y: c_y, valor: valor, escala:gradeMax });
 							break;
 
