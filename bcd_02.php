@@ -24,15 +24,16 @@
 	$PAGE->requires->js('/blocks/calam/js/bcd_02.js');
 
 	
-	$groups_course = get_groups_course($courseid);		
-	$course_start_date = get_course_start_day($courseid);		
+	$groups_course = get_groups_course($courseid);	
+	$course_start_date = get_course_start_day($courseid);
 	$startdateform = 1;
-
 	$groups_select = array();
-	$groups_select[-1] = get_string('selectGroup', 'block_calam');
-	foreach ($groups_course as $value) {
-		$groups_select[$value->id] = $value->name;
-	}
+	if(count($groups_course) > 0){
+		$groups_select[-1] = get_string('selectGroup', 'block_calam');
+		foreach ($groups_course as $value) {
+			$groups_select[$value->id] = $value->name;
+		}
+	}	
 	foreach ($course_start_date as $startdate){
 		$startdateform =$startdate->startdate;
 	}
@@ -42,7 +43,7 @@
     'courseid' => $courseid,
     'coursename' => $course->fullname,
     'startdate' => $startdateform
-	));	
+	));
 
 	$manageurl = new moodle_url('dashboard.php');
 	if ($mform->is_cancelled()) {

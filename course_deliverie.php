@@ -21,8 +21,14 @@ class course_deliverie extends moodleform {
 	    $mform->addElement('hidden', 'course', $courseid);
 	    $mform->addElement('hidden', 'startdate', $startdate);	    
 	    $mform->addElement('html', '<div id="error"></div>');
-		$mform->addElement('select', 'groups', get_string('groups', 'block_calam'), $groups_course);		
-		$mform->addElement('button', 'return', get_string('backToDashboard' , 'block_calam'));
+	    if(count($groups_course)>1)
+			$mform->addElement('select', 'groups', get_string('groups', 'block_calam'), $groups_course);					
+		else
+			$mform->addElement('hidden', 'groups', 0);		
+		$buttonarray=array();		
+		$buttonarray[] = &$mform->createElement('cancel' ,'return', get_string('backToDashboard' , 'block_calam'));
+		$mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+		$mform->closeHeaderBefore('buttonar');
 		$mform->addElement('html', '<div id="grafica"></div>');
 	}
 }
