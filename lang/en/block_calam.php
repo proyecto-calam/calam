@@ -23,11 +23,28 @@ $string['bcd_03'] = 'Forum posts';
 $string['backToDashboard'] = 'Back to dashboard ';
 $string['backToCourse'] = 'Back to course ';
 
-/*Course deliveries bcd_02*/
-$string['groups'] = 'Groups by course ';
-$string['selectGroup'] = 'Select a group ';
-$string['viewData'] = 'View Data ';
-$string['error_group'] = 'Please select a group ';
+	/*Course deliveries bcd_02*/
+	$string['groups'] = 'Groups by course ';
+	$string['selectGroup'] = 'Select a group ';
+	$string['viewData'] = 'View Data ';
+
+	/*Errors bcd_02*/
+	$string['bcd_02_error_group'] = 'Please select a group ';
+
+	/*Graphic bcd_02*/
+	$string['bcd_02_graph_qualification'] = 'Grade ';
+	$string['bcd_02_graph_no_data'] = 'No data ';
+	$string['bcd_02_graph_title'] = 'Index of activities delivered in the course: ';
+	$string['bcd_02_graph_activities'] = 'Activities ';
+	$string['bcd_02_graph_students'] = 'Students ';
+	$string['bcd_02_graph_unde_tasks'] = 'Undeliverable tasks ';
+	$string['bcd_02_graph_task_with_qual'] = 'Tasks without grade ';
+	$string['bcd_02_graph_less_than_60'] = 'Less than 60% ';
+	$string['bcd_02_graph_activ_betw_67'] = 'Between 60% and 70% ';
+	$string['bcd_02_graph_activ_betw_81'] = 'Between 80% and 100% ';
+
+
+
 
 /*
 $string['defaulttitle'] = 'Default Block Title';

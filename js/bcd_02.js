@@ -19,15 +19,28 @@ $(document).on("ready", function(){
 		if(idGrupo != -1)
 			generateGraph();					
 		else{
-			$("#error").append("<label for='error_group'>"+labels['error_01']+"</label>");
+			$("#error").append("<label for='error_group'>"+labels['bcd_02_error_group']+"</label>");
 			$("#error").show("slow");
 			$("#grafica").hide("slow");
 		}
 	});
 
 
-	function getLabels(){
-		labels['error_01'] = 'Selectiona a group';
+	function getLabels(){		
+		//errors
+		labels['bcd_02_error_group'] = $("[name='bcd_02_error_group']").val();
+
+		//graphic
+		labels['bcd_02_graph_qualification'] = $("[name='bcd_02_graph_qualification']").val();
+		labels['bcd_02_graph_no_data'] = $("[name='bcd_02_graph_no_data']").val();
+		labels['bcd_02_graph_title'] = $("[name='bcd_02_graph_title']").val();
+		labels['bcd_02_graph_activities'] = $("[name='bcd_02_graph_activities']").val();
+		labels['bcd_02_graph_students'] = $("[name='bcd_02_graph_students']").val();
+		labels['bcd_02_graph_unde_tasks'] = $("[name='bcd_02_graph_unde_tasks']").val();
+		labels['bcd_02_graph_task_with_qual'] = $("[name='bcd_02_graph_task_with_qual']").val();
+		labels['bcd_02_graph_less_than_60'] = $("[name='bcd_02_graph_less_than_60']").val();
+		labels['bcd_02_graph_activ_betw_67'] = $("[name='bcd_02_graph_activ_betw_67']").val();
+		labels['bcd_02_graph_activ_betw_81'] = $("[name='bcd_02_graph_activ_betw_81']").val();
 	}
 	function generateGraph(){
 		var url = "bcd_02_1.php";			
@@ -54,8 +67,10 @@ $(document).on("ready", function(){
 	}
 	function dibujaChart(obj_json) 
 	{
-		var string = "<span style='\"'color: {color};'\"'><strong>{name}</strong></span><br/><strong>Calificación</strong> {valor}/{escala}<br/>";
-		var string2 = "<span style='\"'color: {color};'\"'><strong>{name}</strong></span><br/><strong>Sin datos<br/>";
+		var string = "<span style='\"'color: {color};'\"'><strong>{name}</strong></span><br/><strong>" + 
+			labels['bcd_02_graph_qualification'] + "</strong> {valor}/{escala}<br/>";
+		var string2 = "<span style='\"'color: {color};'\"'><strong>{name}</strong></span><br/><strong>" + 
+			labels['bcd_02_graph_no_data'] +"<br/>";
 		var dataNew = getDataPoints(string,string2);
 		var contador = 1;
 		var multiplicador = 1;
@@ -103,12 +118,12 @@ $(document).on("ready", function(){
 	var chart = new CanvasJS.Chart("grafica",
 	{
 		title:{
-			text: "Índice de actividades entregadas en el curso: " + obj_json.info.coursename,
+			text: labels['bcd_02_graph_title'] + obj_json.info.coursename,
 			fontSize: 20
 		},
                         animationEnabled: true,
 		axisX: {
-			title:"Tareas",
+			title: labels['bcd_02_graph_activities'],
 			titleFontSize: 13,
 			labelAngle: -20,
 			interval: 1,
@@ -127,7 +142,7 @@ $(document).on("ready", function(){
 			}				
 		},
 		axisY:{
-			title: "Alumnos",
+			title: labels['bcd_02_graph_students'],
 			titleFontSize: 16,
 			interval: multiplicador,
 			labelFontSize: 10,
@@ -173,7 +188,7 @@ $(document).on("ready", function(){
 				type: "scatter",  
 				markerType: "cross", 
 	      		toolTipContent: label2,
-				name: "Tareas sin entregar",
+				name: labels['bcd_02_graph_unde_tasks'],
 				showInLegend: true,  
 				dataPoints: []
 			},
@@ -181,7 +196,7 @@ $(document).on("ready", function(){
 				type: "scatter",  
 				markerType: "cross", 
 	      			toolTipContent: label2,
-				name: "Tareas no calificadas",
+				name: labels['bcd_02_graph_task_with_qual'],
 				showInLegend: true,  
 				dataPoints: []
 			},
@@ -190,7 +205,7 @@ $(document).on("ready", function(){
 				type: "scatter",  
 				markerType: "cross", 
 	      		toolTipContent: label,
-				name: "Menores al 60%",
+				name: labels['bcd_02_graph_less_than_60'],
 				showInLegend: true,  
 				dataPoints: []
 			},
@@ -198,7 +213,7 @@ $(document).on("ready", function(){
 				type: "scatter",  
 				markerType: "triangle", 
 	      		toolTipContent: label,
-				name: "Tareas 60% y 79%",
+				name: labels['bcd_02_graph_activ_betw_67'],
 				showInLegend: true,  
 				dataPoints: []
 			},
@@ -206,7 +221,7 @@ $(document).on("ready", function(){
 				type: "scatter",  
 				markerType: "circle", 
 	      		toolTipContent: label,
-				name: "Tareas 80% o más",
+				name: labels['bcd_02_graph_activ_betw_81'],
 				showInLegend: true,  
 				dataPoints: []
 			}
