@@ -5,21 +5,17 @@
 	$start_date = $_POST['start_date'];
 	$end_date = $_POST['end_date'];		
 	$userid = $_POST['userid'];
-
-	/*Ajuste de las fechas para adecuar al formato GMT*/
-	/*$offset = date("Z");
+	
+	$offset = date("Z");
 	$offset *= 1;
-	//$start_date = strtotime($start_date);
-	//$end_date = strtotime($end_date);
+	$start_date = strtotime($start_date);
+	$end_date = strtotime($end_date);
 	$start_date += $offset;
-	$end_date += $offset;*/
+	$end_date += $offset;
 
-	$output ="";
-			
+	$output ="";			
 	$string_output = "time_platform";
 	$output = get_time_platform_user($start_date, $end_date, $userid);
-
 	$output["opcion"] = array ("opcion"=>1);
-
 	echo json_encode($output);
 ?>
