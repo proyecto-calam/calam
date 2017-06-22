@@ -2,6 +2,8 @@
 $string['pluginname'] = "CALAM (Open Code for Learning Analytics in/on MOODLE)";
 $string['calam'] = 'CALAM';
 
+$string['dashboard'] = 'D A S H B O A R D';
+
 /*capabilities*/
 $string['calam:addinstance'] = 'Add a new CALAM block';
 $string['calam:myaddinstance'] = 'Add a new CALAM block to the My Moodle page';
@@ -59,6 +61,16 @@ $string['headerconfig'] = 'Header Config';
 $string['descconfig'] = 'description Config';
 $string['labelallowhtml'] = 'Label Allow HTML';
 $string['descallowhtml'] = 'Description Allow HTML';
+
+/*Settings*/
+$string['headerconfig'] = 'CALAM';
+$string['descconfig'] = 'CALAM Settings';
+$string['labelallowhtml'] = 'CALAM labelallowhtml';
+$string['descallowhtml'] = 'CALAM descallowhtml';
+$string['windowtime'] = 'Window time text';
+$string['windowtime_desc'] = 'In seconds';
+$string['allowedroles'] = 'Rol calculated';
+$string['allowedroles_desc'] = 'select one o many roles';
 
 /*settings
 $string['defaultsettings'] = "Default settings";

@@ -12,11 +12,13 @@ class block_calam extends block_base {
     	}    	
 
     	$this->content         =  new stdClass;
-	    $this->content->text   =  html_writer::tag('a', 'D A S H B O A R D', array('href' => $CFG->wwwroot.'/blocks/calam/dashboard.php?courseid='.$COURSE->id));
+	    $this->content->text   =  html_writer::tag('a', get_string('dashboard', 'block_calam'), array('href' => $CFG->wwwroot.'/blocks/calam/dashboard.php?courseid='.$COURSE->id));
  	   	return $this->content;
 	}
 
 	public function instance_allow_multiple() {
   		return false;
 	}
+
+	function has_config() {return true;}
 }
