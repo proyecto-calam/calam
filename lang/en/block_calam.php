@@ -43,6 +43,10 @@ $string['backToCourse'] = 'Back to course ';
 	$string['bcd_02_graph_activ_betw_67'] = 'Between 60% and 70% ';
 	$string['bcd_02_graph_activ_betw_81'] = 'Between 80% and 100% ';
 
+	/*Graphic bcd_01*/
+	$string['bcd_01_graph_start_date'] = 'Select start date ';
+	$string['bcd_01_graph_end_date'] = 'Select end date ';
+
 
 
 

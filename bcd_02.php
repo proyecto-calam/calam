@@ -1,8 +1,7 @@
 <?php
 	require_once(dirname(__FILE__) . '/../../config.php');
 	require_once('course_deliverie.php');	
-	require_once('lib.php');	
-
+	require_once('lib.php');
 
 	$item = 'bcd_02';
 
