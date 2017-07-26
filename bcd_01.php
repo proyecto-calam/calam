@@ -37,9 +37,9 @@
     	$manageurl->param('courseid', $courseid);
     	redirect($manageurl);
 	}
-	else{
-		$mform->display();
-	}
+	else
+		$mform->display();			
+			
 	function get_ultimate_log_course($userid, $courseid){
 		global $DB;
 		global $CFG;

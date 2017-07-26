@@ -24,13 +24,6 @@ class time_platform extends moodleform {
 	        'year' => (int)$start_date_format->format("Y")
         );
 
-         $start_date_default = array(
-	        'day' => (int)$start_date_format->format("d"),
-	        'month' => (int)$start_date_format->format("m"),
-	        'year' => (int)$start_date_format->format("Y")
-        );
-       
-
         $end_date_default = array(
 	        'day' => (int)$end_date_format->format("d"),
 	        'month' => (int)$end_date_format->format("m"),
@@ -38,23 +31,27 @@ class time_platform extends moodleform {
         );
 
 	    $year_range = array(
-		    'startyear' => (int)$start_date_format->format("Y"), 		    
-		    'stopyear'  => (int)$end_date_format->format("Y"),		    
+		    'startyear' => (int)$start_date_format->format("Y"),
+		    'stopyear'  => (int)$end_date_format->format("Y"),
 		    'timezone'  => 99,
 		    'optional'  => false
 		);
 	    
 	    $mform = $this->_form;	    
 	    $mform->addElement('header', 'headertimeplatform', get_string('bcd_01', 'block_calam')." - ".$coursename);
-	    $this->add_action_buttons();
 	    $mform->addElement('hidden', 'start_date', $start_date);
+	    $mform->addElement('hidden', 'manual', 0);
 	    $mform->addElement('hidden', 'end_date', $end_date);
 	    $mform->addElement('hidden', 'userid', (int)$userid);
 	    $mform->addElement('hidden', 'courseid', (int)$courseid);
 	    $mform->addElement('date_selector', 'start_date_', get_string('bcd_01_graph_start_date', 'block_calam'), $year_range);
 		$mform->setDefault('start_date_', $start_date_default);
 	    $mform->addElement('date_selector', 'end_date_', get_string('bcd_01_graph_end_date', 'block_calam'), $year_range);
-	    $mform->setDefault('end_date_', $end_date_default);
+	    $mform->setDefault('end_date_', $end_date_default);	    
+	    $buttonarray=array();
+		$buttonarray[] =& $mform->createElement('button', 'submitbutton', "calcular");
+		$buttonarray[] =& $mform->createElement('cancel');
+		$mform->addGroup($buttonarray, 'buttonar', '', '', false);
 		$mform->addElement('html', '<div id="result" style="position: relative; padding-bottom: 80%; height: 0px;  overflow: hidden;" ></div>');
 	}
 }

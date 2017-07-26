@@ -1,19 +1,23 @@
 var obj_json = null;
 $( document ).ready(function() {
-	//$("#mform1").attr("action","bcd_01_1.php");
-	$.ajax({
-	    type: 'POST',
-	    url: 'bcd_01_1.php',
-	    data: $("#mform1").serialize(),
-	    complete: function(data) {
-		console.log(data);
-		obj_json = jQuery.parseJSON(data.responseText);
-		console.log(obj_json);		
-		dibujaChart_1(obj_json);
-	    }
-	});
 
-	function dibujaChart_1(obj_json) 
+	makeChart();
+
+	function makeChart(){
+		$.ajax({
+	    	type: 'POST',
+	    	url: 'bcd_01_1.php',
+	    	data: $("#mform1").serialize(),
+	    	complete: function(data) {
+				console.log(data);
+				obj_json = jQuery.parseJSON(data.responseText);
+				console.log(obj_json);		
+				drawChart_1(obj_json);
+	    	}
+		});
+	}	
+
+	function drawChart_1(obj_json) 
 	{
 		var dps =[];
 
@@ -44,8 +48,6 @@ $( document ).ready(function() {
 
 				dps[1].dataPoints.push({x: fElemento, y:nprom });
 				dps[0].dataPoints.push({x: fElemento, y:nuser });
-
-
 			}
 
 		}
@@ -72,8 +74,11 @@ $( document ).ready(function() {
 		}, 
 			data: dps
 		});
-
 		chart2.render();
-
 	}
+
+	$("#id_submitbutton").on("click", function(){
+		$("input[name=manual]").val("1");
+		makeChart();		
+	});
 });
