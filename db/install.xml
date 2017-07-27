@@ -37,7 +37,8 @@
         <FIELD NAME="time_start" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="userid" NEXT="time_end"/>
         <FIELD NAME="time_end" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="time_start" NEXT="total_time"/>
         <FIELD NAME="total_time" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"  PREVIOUS="time_end" NEXT="courseid"/>    
-        <FIELD NAME="courseid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="total_time"/>    
+        <FIELD NAME="courseid"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="total_time" NEXT="hits"/>    
+        <FIELD NAME="hits"  TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="courseid"/>    
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

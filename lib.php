@@ -16,7 +16,7 @@ function consulta_logs_usuario($idusuario, $f_inicio, $f_fin){
     $datos = '';
 
     $consulta= "
-        SELECT id, userid, courseid, timecreated
+        SELECT id, userid, courseid, timecreated, action
         FROM {$CFG->prefix}logstore_standard_log
         WHERE userid = ?
         AND timecreated  BETWEEN ? AND ?
@@ -183,39 +183,38 @@ Calcula el total de tiempo en segundos de una serie de registros
 $registros	arr	Estos registros son obtenidos de la tabla mdl_logstore_standard_log
 $ventana	int	Cantidad en segundos del máximo tiempo permitido entre un evento y otro del log.
 */
-function computo_tiempo_curso($registros, $ventana){
+function computo_tiempo_curso($records, $window){
 
-    $sumas = array();
-//    $numero = count($registros, 0);
-    $contador = 0;
-    $anterior = 0;
-    $curso_anterior = 0;
+    $result = array();
+    $count = 0;
+    $previous_timecreated = 0;
+    $previous_course = 0;
+    $previous_action = "";
 
-    foreach($registros as $registro){
-	if($contador == 0){
-		$curso_anterior = $registro->courseid;
-		$sumas["$curso_anterior"]= array("tiempo"=>0, "hits"=>1); 
-		$anterior = $registro->timecreated;
-	}else{
-		if($curso_anterior != $registro->courseid){
-			$curso_anterior = $registro->courseid;
-		}
+    foreach($records as $record){
+        if($count == 0){
+            $result["$previous_course"]= array("total_time"=>0, "hits"=>1); 
+            $previous_course = $record->courseid;
+        }
+        else{
+            if($previous_course != $record->courseid){
+                $previous_course = $record->courseid;
+            }
+            if (!array_key_exists($record->courseid, $result)){
+                $result["$previous_course"] = array("total_time"=>0, "hits"=>0); 
+            }
 
-		if (!array_key_exists($registro->courseid, $sumas)){
-			$sumas["$curso_anterior"] = array("tiempo"=>0, "hits"=>1); 
-		}
-
-		$diferencia = $registro->timecreated - $anterior;
-		$sumas["$curso_anterior"]["hits"]++;
-
-		if($diferencia <= $ventana){
-			$sumas["$curso_anterior"]["tiempo"] += $diferencia;
-		}
-		$anterior = $registro->timecreated;		
-	}
-        $contador++;
+            $interval = $record->timecreated - $previous_timecreated;
+            $result["$previous_course"]["hits"]++;
+            if($interval <= $window && strcmp($previous_action, 'loggedout') != 0){ //if the prev action is not loggedout hacemos la suma
+                $result["$previous_course"]["total_time"] += $interval;
+            }
+        }
+        $previous_timecreated = $record->timecreated;
+        $previous_action = $record->action;
+        $count++;
     }
-    return $sumas;
+    return $result;
 }
 
 
@@ -306,18 +305,18 @@ $time_end      	bigint    fecha en formato timestamp
 $total_time    	bigint
 */
 
-function insert_unam_stats_usertime_course($userid, $time_start, $time_end, $total_time, $courseid){
+function insert_unam_stats_usertime_course($userid, $time_start, $time_end, $totals, $courseid){
     global $DB;
 
     $registro = new stdClass();
     $registro->userid = $userid;
     $registro->time_start = $time_start;
     $registro->time_end = $time_end;
-    $registro->total_time = $total_time["tiempo"];
+    $registro->total_time = $totals["total_time"];
     $registro->courseid = $courseid;
-    $registro->hits = $total_time["hits"];
+    $registro->hits = $totals["hits"];
 
-    $tmp = $DB->insert_record('unam_stats_usertime_course', $registro, false);
+    $tmp = $DB->insert_record('block_calam_usertime', $registro, false);
 }
 
 
@@ -1369,9 +1368,10 @@ function calculate_unam_stats_usertime_for_instalation(){
     
     //Definición de la variable CFG para uso de recursos moodle.
     global $CFG;
+    $tbl_name = "block_calam_usertime";
 
     //verificar que existan datos en la tabla 'unam_stats_usertime'.
-    $exist_data = check_table_data("unam_stats_usertime");
+    $exist_data = check_table_data($tbl_name);
     
     //Variable offset que contiene la diferencia del GMT para ser aplicada en las variables tipo date
     $offset = date("Z");      
@@ -1395,10 +1395,10 @@ function calculate_unam_stats_usertime_for_instalation(){
         $arr_users = get_users_id();
 
         //Se obtiene el valor de la ventana de tiempo seleccionada por el administrador {$CFG->time_window}
-        $window = $CFG->time_window;
+        $window = (int)$CFG->time_window;
       
         //Se multiplica por 1 para hacerlo entero
-        $window *= 1;
+        //$window *= 1;
       
         //Se realiza un arreglo con los días del período de cálculo, en este caso el día de inicio dado por el administrador y el día de fin es el día de ayer
         $arr_days = get_days_in_a_period($start_day, $yesterday);
@@ -1426,10 +1426,10 @@ function calculate_unam_stats_usertime_for_instalation(){
     else//En caso de existir datos en la tabla
     {
         //Se verifica cuál es el último día calculado.
-        $last_day = calculated_last_day("unam_stats_usertime");
+        $last_day = (int)calculated_last_day($tbl_name);
       
         //Se multiplica por 1 para transformar la cadena a un entero
-        $last_day *= 1;
+//        $last_day *= 1;
       
         // Se adecua al GMT
         $last_day -= $offset;
