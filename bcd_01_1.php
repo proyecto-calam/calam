@@ -11,8 +11,8 @@
 	
 
 	if($manual == 1){		
-		$start_date = formatea((int)$_POST['start_date_']['day'])."-".formatea((int)$_POST['start_date_']['month'])."-".$_POST['start_date_']['year'];
-		$end_date = formatea((int)$_POST['end_date_']['day'])."-".formatea((int)$_POST['end_date_']['month'])."-".$_POST['end_date_']['year'];
+		$start_date = format_date((int)$_POST['start_date_']['day'])."-".format_date((int)$_POST['start_date_']['month'])."-".$_POST['start_date_']['year'];
+		$end_date = format_date((int)$_POST['end_date_']['day'])."-".format_date((int)$_POST['end_date_']['month'])."-".$_POST['end_date_']['year'];
 	}
 	
 	$offset = date("Z");
@@ -27,13 +27,4 @@
 	$output = get_time_platform_user($start_date, $end_date, $userid);
 	$output["opcion"] = array ("opcion"=>1);	
 	echo json_encode($output);
-
-	function formatea ($p){
-		if($p <10){
-			return '0'.$p;
-		}
-		else{
-			return ''.$p;
-		}
-	}
 ?>

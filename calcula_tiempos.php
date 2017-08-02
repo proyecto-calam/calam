@@ -15,9 +15,15 @@
 
     //verificar que existan datos en la tabla 'unam_stats_usertime'.
     $exist_data = check_table_data($tbl_name);
+    $start_day = 0;
 
     if (!$exist_data){      
-        $start_day = (int)$CFG->start_day;
+	    $startDay = get_config('calam', 'start_day');
+	    $startMonth = get_config('calam', 'start_month');
+	    $startYear = get_config('calam', 'start_year');
+
+        $sf = format_date($startDay) . "-" .format_date($startMonth). "-" .format_date($startYear);
+        $start_day = strtotime($sf);
         $today_format = get_today_dmy();
         $yesterday = get_yesterday_timestamp($today_format, $offset);
     }
@@ -35,7 +41,7 @@
         $start_day = $last_day + 86400; 
       
         //Se genera el String en formato d-m-Y
-        $next_day_format = date('d-m-Y', $start_day);        
+        $next_day_format = date('d-m-Y', $start_day);       var_dump($sf);     
 
         //Se obtiene el día actual en formato 'd-m-Y'
         $today_format = get_today_dmy();
@@ -48,74 +54,38 @@
             error("No se calcula el día actual");
             die();
         }
-        //Se adecua la hora con GMT
-        $start_day += $offset;      
     }
-
-var_dump($start_day);
-var_dump($yesterday);
-
-//die();
+    //Se adecua la hora con GMT
+    $start_day += $offset;      
 
     //Se obtiene un arreglo con el id, firstname y lastname de los usuarios definidos por el administrador para ser calculados {$CFG->role_calculate}
     $arr_users = get_users_id();
 
-    //Se obtiene el valor de la ventana de tiempo seleccionada por el administrador {$CFG->time_window}
-    $window = (int)$CFG->time_window;    
+    //Se obtiene el valor de la ventana de tiempo seleccionada por el administrador 
+    $window = (int)get_config('calam', 'window_time');  
 
     //Se realiza un arreglo con los días del período de cálculo, en este caso el día de inicio dado por el administrador y el día de fin es el día de ayer
     $arr_days = get_days_in_a_period($start_day, $yesterday);
 
-//die();    
       
     //El contador de días obtenidos
     $n_days = count($arr_days);
 
     //El procedimiento de calculo e inserción en la base de datos
     foreach($arr_users as $this_user){
-        $elements = get_count_user_hits($start_day, $yesterday + 86399, $this_user->id);
+        $elements = get_count_user_hits($start_day, $yesterday, $this_user->id);
         if($elements->count > 0){
             for ($i = 0; $i < $n_days; $i++){
-                $user_logs = consulta_logs_usuario($this_user->id, $arr_days[$i], $arr_days[$i] + 86399 );
-                $tiempos = computo_tiempo_curso($user_logs, $window);
+                $user_logs = get_user_logs($this_user->id, $arr_days[$i], $arr_days[$i] + 86399 );
+                $user_time = get_user_time_by_course($user_logs, $window);
 
-                foreach( $tiempos as $id_curso=>$tiempo_curso){
-                    if($tiempo_curso["tiempo"] > 0 || $tiempo_curso["hits"] > 0)
-                        insert_unam_stats_usertime_course($this_user->id,  $arr_days[$i],  $arr_days[$i] + 86399, $tiempo_curso, $id_curso);
+                foreach( $user_time as $id_curso=>$tiempo_curso){
+                    if(($tiempo_curso["total_time"] > 0 || $tiempo_curso["hits"] > 0) && $id_curso > 0)
+                        insert_calam_usertime_course($this_user->id,  $arr_days[$i],  $arr_days[$i] + 86399, $tiempo_curso, $id_curso);
                 }
             }              
         }
     }
-    echo "El proceso de cálculo de tiempos por usuario ha concluido satisfactoriamente";
-
-
-/*    
-    $time_fin=_microtime();
-    $memo_fin=memory_get_peak_usage();    
-    $memoria_final = memory_get_usage();
-    echo '
-    Memoria final: ' . $memoria_final . '
-    
-    memo ini: '. $memo_fin .'
-
-    ';
-
-
-    
-
-echo "
-Usados un máximo de: ".round(($memo_fin - $memo_ini)/(1024*1024),2). "Mb
-
-";
-*/
-/*    
-    $memoria_inicial = memory_get_usage();
-    $memo_ini=memory_get_peak_usage();    
-    $time_ini=_microtime();
-    echo 'Memoria inicial: ' . $memoria_inicial . '
-    memo ini: '. $memo_ini .'
-    ';
-    
-*/    
+    echo "El proceso de cálculo de tiempos por usuario ha concluido satisfactoriamente\n\n";
 
 ?>

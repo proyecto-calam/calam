@@ -10,7 +10,7 @@ Esta función Obtiene todos los registros del logstore_standard_log en un determ
     $f_inicio	bigint    fecha en formato timestamp
     $f_fin	bigint    fecha en formato timestamp
 */
-function consulta_logs_usuario($idusuario, $f_inicio, $f_fin){
+function get_user_logs($idusuario, $f_inicio, $f_fin){
     global $DB;
     global $CFG;
     $datos = '';
@@ -183,7 +183,7 @@ Calcula el total de tiempo en segundos de una serie de registros
 $registros	arr	Estos registros son obtenidos de la tabla mdl_logstore_standard_log
 $ventana	int	Cantidad en segundos del máximo tiempo permitido entre un evento y otro del log.
 */
-function computo_tiempo_curso($records, $window){
+function get_user_time_by_course($records, $window){
 
     $result = array();
     $count = 0;
@@ -305,7 +305,7 @@ $time_end      	bigint    fecha en formato timestamp
 $total_time    	bigint
 */
 
-function insert_unam_stats_usertime_course($userid, $time_start, $time_end, $totals, $courseid){
+function insert_calam_usertime_course($userid, $time_start, $time_end, $totals, $courseid){
     global $DB;
 
     $registro = new stdClass();
@@ -410,6 +410,8 @@ Esta función obtiene el un arreglo de usuarios con los datos id, firstame, last
 function get_users_id(){
     global $DB;
     global $CFG;
+    
+    $calculate_allowed_roles = get_config('calam', 'allowed_roles'); 
     $result = "";
     $query="
         SELECT DISTINCT  u.id, u.firstname, u.lastname
@@ -418,7 +420,7 @@ function get_users_id(){
         INNER JOIN {$CFG->prefix}role_assignments AS ra ON u.id = ra.userid
         INNER JOIN {$CFG->prefix}context AS context ON context.id = ra.contextid AND context.contextlevel = 50
         INNER JOIN {$CFG->prefix}role AS r ON ra.roleid = r.id
-        WHERE ra.roleid IN ({$CFG->role_calculate})
+        WHERE ra.roleid IN ({$calculate_allowed_roles})
 	ORDER BY u.id asc
     ";
     $data = $DB->get_records_sql($query);
@@ -1738,5 +1740,14 @@ function _microtime(){
 	// 0.41494500 1291000531 -> 1291000531.41494500
 	list($usec, $sec) = explode(" ", microtime());
 	return ((float)$usec + (float)$sec);
+}
+
+function format_date($p){
+    if($p <10){
+        return '0'.$p;
+    }
+    else{
+        return ''.$p;
+    }
 }
 ?>

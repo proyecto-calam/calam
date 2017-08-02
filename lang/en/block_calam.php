@@ -72,6 +72,27 @@ $string['windowtime_desc'] = 'In seconds';
 $string['allowedroles'] = 'Rol calculated';
 $string['allowedroles_desc'] = 'select one o many roles';
 
+$string['startday'] = "Start day";
+$string['startday_desc'] = "Desc Day";
+$string['startmonth'] = "Start month";
+$string['startmonth_desc'] = "Desc Month";
+$string['startyear'] = "Start year";
+$string['startyear_desc'] = "Desc Year";
+
+$string['month_1'] = "January";
+$string['month_2'] = "February";
+$string['month_3'] = "March";
+$string['month_4'] = "April";
+$string['month_5'] = "May";
+$string['month_6'] = "June";
+$string['month_7'] = "July";
+$string['month_8'] = "August";
+$string['month_9'] = "September";
+$string['month_10'] = "October";
+$string['month_11'] = "November";
+$string['month_12'] = "Deceber";
+
+
 /*settings
 $string['defaultsettings'] = "Default settings";
 $string['defaultdate'] = "Default date tracking";
@@ -81,7 +102,4 @@ $string['windowtime'] = "Window time";
 $string['windowtimeinfo'] = "This is the miliseconds between two hits";
 $string['calculaterole'] = "Calculated roles";
 $string['calculateroleinfo'] = "Select the role to calculate statics";
-$string['initday'] = "Day";
-$string['initmonth'] = "Month";
-$string['inityear'] = "Year";
 $string['date_title'] = "Date Settings";*/
