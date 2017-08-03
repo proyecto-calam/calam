@@ -48,8 +48,13 @@ $string['backToCourse'] = 'Back to course ';
 	/*Graphic bcd_01*/
 	$string['bcd_01_graph_start_date'] = 'Select start date ';
 	$string['bcd_01_graph_end_date'] = 'Select end date ';
-
-
+        $string['bcd_01_graph_calculate'] = 'Calculate';
+        $string['bcd_01_graph_json_accesdata'] = 'Access Data of ';
+        $string['bcd_01_graph_json_averagetime'] = 'Average time ';
+        $string['bcd_01_graph_json_minutes'] = 'Minutes ';
+        $string['bcd_01_graph_json_minutesabr'] = 'min.';
+        $string['bcd_01_graph_json_usertime'] = 'User time ';
+        $string['bcd_01_graph_json_date'] = 'Date ';
 
 
 /*
