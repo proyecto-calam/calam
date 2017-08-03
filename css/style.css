@@ -12,7 +12,7 @@
 	margin: 20px;
 /*	background-size: 250px 250px;*/
 	background-size: 190px ;
-	height: 190px;
+	height: 200px;
 	width: 165px;
 }
 
@@ -30,13 +30,15 @@
 
 #bcd_01{
 	background-image: url("../img/bcd_01.png");
+  text-align: center;
 }
 #bcd_02{
 	background-image: url("../img/bcd_02.png");
+  text-align: center;
 }
 #bcd_03{
 	background-image: url("../img/bcd_03.png");
-
+  text-align: center;
 }
 
 #return{
